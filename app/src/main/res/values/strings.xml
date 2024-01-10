@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Examen_Cesar_Oswaldo_Ponce_Chavez</string>
+    <string name="Nombre">Nombre del Planeta:</string>
+    <string name="Descrubrimiento">Descubrimiento</string>
+    <string name="Satelite">"Satélites: "</string>
+    <string name="Anillo">Anillo:</string>
+    <string name="Tipo">Tipo de Planeta</string>
+    <string name="Planetas">Mercurio\nVenus\nTierra\nMarte\nJúpiter\nSaturno\nUrano\nNeptuno\nPlutón</string>
+</resources>
