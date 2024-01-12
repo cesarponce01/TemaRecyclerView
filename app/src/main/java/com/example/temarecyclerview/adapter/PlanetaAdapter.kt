@@ -1,45 +1,66 @@
 package com.example.temarecyclerview.adapter
 
-import android.app.Activity
-import android.database.DataSetObserver
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ListAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.temarecyclerview.R
-import com.example.temarecyclerview.model.Planeta
+import com.example.temarecyclerview.models.Planeta
 
+class PlanetaAdapter(private val listaPlanetas: ArrayList<Planeta>) :
+    RecyclerView.Adapter<PlanetaAdapter.PlanetaViewHolder> (){
 
-class PlanetaAdapter(
-    private val activity: Activity,
-    private val listaPlanetas: MutableList<Planeta>
-) : RecyclerView.Adapter<PlanetaAdapter.ViewHolder>(), ListAdapter {
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvNombre: TextView = itemView.findViewById(R.id.adapterNombre)
-        val ivImagen: ImageView = itemView.findViewById(R.id.adapterImagen)
-        val tvTipo: TextView = itemView.findViewById(R.id.adapterTipo)
+    private var onMyClickListener: OnMyClickListener? = null
+    interface OnMyClickListener{
+        fun onClick(planet:Planeta)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_adaptador, parent, false)
-        return ViewHolder(view)
+    class PlanetaViewHolder(itemView : View) :
+        RecyclerView.ViewHolder(itemView){
+
+        val tvNombre: TextView
+        val ivImagen: ImageView
+        val tvTipo: TextView
+
+        init {
+            tvNombre=itemView.findViewById(R.id.adapterNombre)
+            ivImagen=itemView.findViewById(R.id.adapterImagen)
+            tvTipo=itemView.findViewById(R.id.adapterTipo)
+        }
+
+        fun render(planetaModelo: Planeta, onMyClickListener: OnMyClickListener?){
+            tvNombre.text=planetaModelo.name
+            ivImagen.setImageResource(planetaModelo.image)
+            tvTipo.text=planetaModelo.type
+
+            itemView.setOnClickListener{
+               if (onMyClickListener != null){
+                   onMyClickListener.onClick(planetaModelo)
+               }
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanetaViewHolder {
+        val view=LayoutInflater.from(parent.context).inflate(R.layout.planet_item,parent,false)
+        return PlanetaViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return listaPlanetas.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvNombre.text = listaPlanetas[position].nombre
-        holder.tvTipo.text = listaPlanetas[position].tipo
+    override fun onBindViewHolder(holder: PlanetaViewHolder, position: Int) {
+        //holder.tvNombre.text = listaPlanetas[position].name
+        //holder.tvTipo.text = listaPlanetas[position].type
+        //holder.ivImagen.setImageResource(listaPlanetas[position].image)
+
+        holder.render(listaPlanetas[position], onMyClickListener)
     }
 
-
-
+    fun setOnItemClickListener(onMyClickListener: OnMyClickListener){
+        this.onMyClickListener = onMyClickListener
+    }
 }
